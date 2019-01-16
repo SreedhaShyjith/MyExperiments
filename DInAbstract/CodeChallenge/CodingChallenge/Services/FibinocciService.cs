@@ -1,22 +1,29 @@
-﻿using CodingChallenge.Models;
+using CodingChallenge.Models;
+using System;
 using System.Collections.Generic;
 
 namespace CodingChallenge.IServices
 {
-    public class FibanocciService: IFibinocciService
-    {
+    public class FibanocciService : IFibinocciService
+    {/// <summary>
+     /// Generate Fibinocci series with the length of array same as num
+     /// </summary>
+     /// <param name="num"></param>
+     /// <returns></returns>
         public Fibonacci GenerateFebinocciSeries(int? num)
         {
             Fibonacci FibonacciResponse = new Fibonacci();
-            List<int> fibonacciSeries = new List<int>();
-
-            if (num != null && num > 0) 
+            if (num > 0)
             {
-                for (int i = 0; i < num; i++)
-                {
-                    fibonacciSeries.Add(GenerateFibonacciNumber(i));
-                }
-                FibonacciResponse.FibonacciSequence = fibonacciSeries;
+                int[] series = new int[1];
+                Array.Resize(ref series, Convert.ToInt32(num));
+
+                series[0] = 0;
+                series[1] = 1;
+
+                for (int i = 2; i < num; i++)
+                    series[i] = series[i - 1] + series[i - 2];
+                FibonacciResponse.FibonacciSequence = series;
                 FibonacciResponse.Message = "Success";
             }
             else
@@ -26,30 +33,5 @@ namespace CodingChallenge.IServices
 
             return FibonacciResponse;
         }
-
-        /// <summary>
-        /// method togenerate the next Fibonacci number
-        /// </summary>
-        /// <param name="n">length of the Fibonacci series</param>
-        /// <returns> </returns>
-        private int GenerateFibonacciNumber(int n)
-        {
-            int FirstFibonacci = 0, SecondFibonacci = 1, result = 0;
-
-            if (n == 0) return 0; //To return the first Fibonacci number   
-            if (n == 1) return 1; //To return the second Fibonacci number   
-
-            for (int i = 2; i <= n; i++)
-            {
-                result = FirstFibonacci + SecondFibonacci;
-                FirstFibonacci = SecondFibonacci;
-                SecondFibonacci = result;
-            }
-            return result;
-        }
-
-       
     }
-
-
 }
